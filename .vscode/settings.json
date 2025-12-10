@@ -1,0 +1,19 @@
+{
+    "sqltools.connections": [
+        {
+            "mysqlOptions": {
+                "authProtocol": "default",
+                "enableSsl": "Disabled"
+            },
+            "ssh": "Disabled",
+            "previewLimit": 50,
+            "server": "hecferme-programacion-avanzada-MySQL.mysql.database.azure.com",
+            "port": 3306,
+            "driver": "MySQL",
+            "name": "user04",
+            "database": "user04",
+            "username": "user04",
+            "password": "MyStr0ngPassw0rd8*6-3#04"
+        }
+    ]
+}
