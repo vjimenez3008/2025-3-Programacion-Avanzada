@@ -1,0 +1,16 @@
+@model HotelmasCarga.Models.TipoHabitacion
+@{
+    ViewData["Title"] = "Room Type Details";
+}
+
+<h1>Details</h1>
+<dl class="row">
+    <dt class="col-sm-2">Nombre</dt>
+    <dd class="col-sm-10">@Model.Nombre</dd>
+    <dt class="col-sm-2">Descripcion</dt>
+    <dd class="col-sm-10">@Model.Descripcion</dd>
+    <dt class="col-sm-2">Precio</dt>
+    <dd class="col-sm-10">@Model.Precio.ToString("C")</dd>
+</dl>
+<a asp-action="Edit" asp-route-id="@Model.IdTipoHabitacion" class="btn btn-primary">Edit</a>
+<a asp-action="Index" class="btn btn-secondary">Back</a>

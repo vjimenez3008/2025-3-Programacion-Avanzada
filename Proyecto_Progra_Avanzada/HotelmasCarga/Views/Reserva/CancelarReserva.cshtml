@@ -1,0 +1,84 @@
+@model HotelmasCarga.Models.ReagendarReservaViewModel
+
+@{
+    ViewData["Title"] = "Cancelar Reserva";
+}
+
+<div class="container mt-3">
+    <h2>Cancelar Reserva</h2>
+
+    @if (TempData["CancelarError"] != null)
+    {
+        <div class="alert alert-danger">@TempData["CancelarError"]</div>
+    }
+    @if (TempData["CancelarMessage"] != null)
+    {
+        <div class="alert alert-success">@TempData["CancelarMessage"]</div>
+    }
+
+    <form method="get" asp-action="CancelarReserva" class="form-inline mb-3">
+        <div class="input-group">
+            <input type="text" name="searchName" class="form-control" placeholder="Buscar cliente por nombre" value="@Model.SearchName" />
+            <div class="input-group-append">
+                <button class="btn btn-primary" type="submit">Buscar</button>
+            </div>
+        </div>
+    </form>
+
+    @if (Model.Clientes != null && Model.Clientes.Count > 0)
+    {
+        <form method="get" asp-action="CancelarReserva" class="mb-3">
+            <input type="hidden" name="searchName" value="@Model.SearchName" />
+            <div class="list-group">
+                @foreach (var c in Model.Clientes)
+                {
+                    <label class="list-group-item">
+                        <input type="radio" name="clienteId" value="@c.IdCliente" />
+                        <strong>@c.Nombre</strong> - @c.Email
+                    </label>
+                }
+            </div>
+            <button class="btn btn-secondary mt-2" type="submit">Seleccionar cliente</button>
+        </form>
+    }
+
+    @if (Model.Reservas != null && Model.Reservas.Count > 0)
+    {
+        <form method="get" asp-action="CancelarReserva" class="mb-3">
+            <input type="hidden" name="searchName" value="@Model.SearchName" />
+            <input type="hidden" name="clienteId" value="@Model.SelectedClienteId" />
+            <div class="list-group">
+                @foreach (var r in Model.Reservas)
+                {
+                    <label class="list-group-item">
+                        <input type="radio" name="reservaId" value="@r.IdReserva" />
+                        Fecha: @r.FechaReserva.ToString("yyyy-MM-dd") - Hab: @r.Habitacion?.Numero
+                    </label>
+                }
+            </div>
+            <button class="btn btn-danger mt-2" type="submit">Seleccionar reserva</button>
+        </form>
+    }
+
+    @if (Model.SelectedReserva != null)
+    {
+        <div class="card mb-3">
+            <div class="card-body">
+                <h5 class="card-title">Reserva seleccionada</h5>
+                <p class="card-text">Cliente ID: @Model.SelectedReserva.IdCliente<br />
+                    Habitación: @Model.SelectedReserva.Habitacion?.Numero<br />
+                    Fecha: @Model.SelectedReserva.FechaReserva.ToString("yyyy-MM-dd")
+                </p>
+            </div>
+        </div>
+
+        <form method="post" asp-action="CancelarReservaConfirm">
+            <input type="hidden" name="reservaId" value="@Model.SelectedReservaId" />
+            <input type="hidden" name="searchName" value="@Model.SearchName" />
+            <div class="mb-2">¿Confirma la cancelación de esta reserva?</div>
+            <button class="btn btn-danger" type="submit">Confirmar Cancelación</button>
+            <a class="btn btn-link" asp-action="CancelarReserva">Cancelar</a>
+        </form>
+    }
+
+</div>

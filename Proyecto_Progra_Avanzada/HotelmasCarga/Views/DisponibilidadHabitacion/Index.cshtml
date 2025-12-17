@@ -1,0 +1,39 @@
+@model IEnumerable<HotelmasCarga.Models.DisponibilidadHabitacion>
+
+@{
+    ViewData["Title"] = "Disponibilidades";
+}
+
+<div class="container mt-3">
+    <h2>Disponibilidades</h2>
+    <p>
+        <a asp-action="Create" class="btn btn-primary">Crear nueva</a>
+    </p>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Fecha</th>
+                <th>Habitación</th>
+                <th>Tipo</th>
+                <th>Disponible</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.Fecha.ToString("yyyy-MM-dd")</td>
+                    <td>@item.Habitacion?.Numero</td>
+                    <td>@item.Habitacion?.TipoHabitacion?.Nombre</td>
+                    <td>@(item.EstaDisponible ? "Sí" : "No")</td>
+                    <td>
+                        <a asp-action="Details" asp-route-id="@item.IdDisponibilidad">Detalles</a> |
+                        <a asp-action="Edit" asp-route-id="@item.IdDisponibilidad">Editar</a> |
+                        <a asp-action="Delete" asp-route-id="@item.IdDisponibilidad">Eliminar</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

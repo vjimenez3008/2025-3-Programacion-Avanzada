@@ -1,0 +1,56 @@
+<div class="page-background">
+@{
+    ViewData["Title"] = "Home";
+}
+
+<h1>Bienvenido a  HotelmasCarga</h1>
+
+@using Microsoft.EntityFrameworkCore
+@inject HotelmasCarga.Data.HotelmasCargaContext Db
+
+<div class="container vh-100 d-flex justify-content-center align-items-center" style="background-color: cadetblue;">
+    <div class="text-center p-5 shadow-sm rounded bg-white" style="max-width: 600px;">
+        
+        <h1 class="display-4 mb-3">
+            
+        </h1>
+
+        <p class="lead mb-0">
+            Esta es la página principal del sistema de gestión de HotelmasCarga.
+        </p>
+
+    </div>
+</div>
+
+
+@{
+    // show alerts when available rooms match waiting list entries
+    var alerts = new List<string>();
+    var disponibles = Db.Disponibilidades.Include(d => d.Habitacion).ThenInclude(h => h!.TipoHabitacion).Where(d => d.EstaDisponible).ToList();
+    foreach (var d in disponibles)
+    {
+        var tipoId = d.Habitacion?.IdTipoHabitacion ?? 0;
+        var fecha = d.Fecha.Date;
+        var waiting = Db.ColasEspera.Where(c => c.IdTipoHabitacion == tipoId && c.FechaDeseada == fecha && c.Estado == "Activo").OrderBy(c => c.FechaRegistro).Any();
+        if (waiting)
+        {
+            var tipoNombre = d.Habitacion?.TipoHabitacion?.Nombre ?? "(tipo)";
+            alerts.Add($"Hay personas en lista de espera para tipo {tipoNombre} en {fecha:yyyy-MM-dd}.");
+        }
+    }
+}
+
+@if (alerts.Any())
+{
+    <div class="container mt-3">
+        @foreach (var a in alerts.Distinct())
+        {
+            <div class="alert alert-warning">@a</div>
+        }
+    </div>
+}
+
+
+
+ </div>
+   

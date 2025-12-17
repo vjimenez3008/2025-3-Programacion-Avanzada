@@ -1,0 +1,4 @@
+body { font-family: Arial, Helvetica, sans-serif; margin: 0; padding: 0; }
+.container { padding: 1rem; }
+header { background: #f8f9fa; padding: 0.5rem 1rem; }
+footer { background: #f1f1f1; padding: 1rem; text-align: center; margin-top: 2rem; }

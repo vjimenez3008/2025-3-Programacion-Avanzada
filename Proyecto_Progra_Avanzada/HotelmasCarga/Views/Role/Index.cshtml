@@ -1,0 +1,50 @@
+@{
+    ViewData["Title"] = "Select Role";
+}
+
+
+<div class="container vh-100 d-flex justify-content-center align-items-center">
+    <div class="card shadow-sm" style="min-width: 380px;">
+        <div class="card-body p-4">
+            
+            <h4 class="card-title text-center mb-4">
+                Selección de Rol
+            </h4>
+
+            <form method="post" asp-action="Set">
+                
+                <div class="mb-3">
+                    <label class="form-label fw-semibold">
+                        Rol asignado
+                    </label>
+                    <select name="role" class="form-select">
+                        @foreach (var r in (string[])ViewData["Roles"])
+                        {
+                            if (r == (string)ViewData["Active"])
+                            {
+                                <option value="@r" selected>@r</option>
+                            }
+                            else
+                            {
+                                <option value="@r">@r</option>
+                            }
+                        }
+                    </select>
+                </div>
+
+                <div class="d-flex justify-content-between mt-4">
+                    <button type="submit" class="btn btn-primary px-4">
+                        Confirmar
+                    </button>
+
+                    <a class="btn btn-outline-secondary"
+                       asp-controller="Home"
+                       asp-action="Index">
+                        Cancelar
+                    </a>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>

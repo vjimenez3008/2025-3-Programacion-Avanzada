@@ -1,0 +1,42 @@
+@model HotelmasCarga.Models.Reserva
+
+@{
+    ViewData["Title"] = "Crear Reserva";
+}
+
+<h1>Crear Reserva</h1>
+
+<form asp-action="Create" method="post">
+    <div class="form-group">
+        <label asp-for="FechaReserva" class="control-label"></label>
+        <input asp-for="FechaReserva" class="form-control" type="date" />
+        <span asp-validation-for="FechaReserva" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="IdCliente" class="control-label">Cliente</label>
+        <select asp-for="IdCliente" class="form-control" asp-items="@(ViewData["Clientes"] as Microsoft.AspNetCore.Mvc.Rendering.SelectList)">
+            <option value="">-- Seleccione --</option>
+        </select>
+        <span asp-validation-for="IdCliente" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="IdHabitacion" class="control-label">Habitación</label>
+        <select asp-for="IdHabitacion" class="form-control" asp-items="@(ViewData["Habitaciones"] as Microsoft.AspNetCore.Mvc.Rendering.SelectList)">
+            <option value="">-- Seleccione --</option>
+        </select>
+        <span asp-validation-for="IdHabitacion" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Estado" class="control-label"></label>
+        <input asp-for="Estado" class="form-control" />
+        <span asp-validation-for="Estado" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <input type="submit" value="Crear" class="btn btn-primary" />
+        <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
+    </div>
+</form>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

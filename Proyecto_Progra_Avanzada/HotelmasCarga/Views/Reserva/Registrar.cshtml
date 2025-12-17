@@ -1,0 +1,108 @@
+@model HotelmasCarga.Models.RegistrarReservaViewModel
+
+@{
+    ViewData["Title"] = "Registrar Reserva";
+}
+
+<h1>Registrar Reserva</h1>
+
+@if (TempData["RegistrarMessage"] != null)
+{
+    <div class="alert alert-info">@TempData["RegistrarMessage"]</div>
+}
+
+<form method="get" class="form-inline mb-3">
+    <div class="form-group mr-2">
+        <input name="searchName" value="@Model.SearchName" class="form-control" placeholder="Buscar cliente por nombre" />
+    </div>
+    <div class="form-group mr-2">
+        <select name="tipoId" class="form-control">
+            <option value="">Todos los tipos</option>
+            @foreach (var t in Model.Tipos)
+            {
+                if (Model.TipoSeleccionado == t.IdTipoHabitacion)
+                {
+                    <option value="@t.IdTipoHabitacion" selected>@t.Nombre</option>
+                }
+                else
+                {
+                    <option value="@t.IdTipoHabitacion">@t.Nombre</option>
+                }
+            }
+        </select>
+    </div>
+    <button class="btn btn-primary">Buscar</button>
+</form>
+
+<h5>Clientes</h5>
+<form asp-action="RegistrarConfirm" method="post">
+    <div class="form-group">
+        @if (Model.Clientes?.Count > 0)
+        {
+            foreach (var c in Model.Clientes)
+            {
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="clienteId" value="@c.IdCliente" id="cliente_@c.IdCliente" />
+                    <label class="form-check-label" for="cliente_@c.IdCliente">@c.Nombre (@c.Email)</label>
+                </div>
+            }
+        }
+        else
+        {
+            <div class="text-muted">No hay clientes. Use la búsqueda para encontrar por nombre o <a asp-controller="Cliente" asp-action="Create">crear uno</a>.</div>
+        }
+    </div>
+
+    <h5>Disponibilidad (14 días)</h5>
+    @if (Model.Rows.Count == 0)
+    {
+        <div class="text-muted">No hay habitaciones para el tipo seleccionado.</div>
+    }
+    else
+    {
+        <div class="table-responsive">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Habitación</th>
+                        @foreach (var d in Model.Dates)
+                        {
+                            <th>@d.ToString("MM-dd")</th>
+                        }
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var row in Model.Rows)
+                    {
+                        <tr>
+                            <td>@row.Habitacion.Numero</td>
+                            @foreach (var d in Model.Dates)
+                            {
+                                <td class="text-center">
+                                    @if (row.AvailableByDate.ContainsKey(d) && row.AvailableByDate[d])
+                                    {
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="selectedCell" value="@(row.Habitacion.IdHabitacion + "|" + d.ToString("yyyy-MM-dd"))" />
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <span class="text-danger">X</span>
+                                    }
+                                </td>
+                            }
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+
+    <input type="hidden" name="tipoId" value="@Model.TipoSeleccionado" />
+    <input type="hidden" name="searchName" value="@Model.SearchName" />
+    <div class="form-group mt-2">
+        <button type="submit" class="btn btn-success">Confirmar Reserva</button>
+        <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
+    </div>
+    @Html.AntiForgeryToken()
+</form>

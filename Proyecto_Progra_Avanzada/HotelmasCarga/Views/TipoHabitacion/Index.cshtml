@@ -1,0 +1,33 @@
+@model IEnumerable<HotelmasCarga.Models.TipoHabitacion>
+@{
+    ViewData["Title"] = "Room Types";
+}
+
+<h1>Tipos de Habitaciones</h1>
+<p>
+    <a class="btn btn-primary" asp-action="Create">Create New</a>
+</p>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Nombre</th>
+            <th>Descripcion</th>
+            <th>Precio</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+    @foreach(var item in Model){
+        <tr>
+            <td>@item.Nombre</td>
+            <td>@item.Descripcion</td>
+            <td>@item.Precio.ToString("C")</td>
+            <td>
+                <a class="btn btn-sm btn-secondary" asp-action="Edit" asp-route-id="@item.IdTipoHabitacion">Edit</a>
+                <a class="btn btn-sm btn-info" asp-action="Details" asp-route-id="@item.IdTipoHabitacion">Details</a>
+                <a class="btn btn-sm btn-danger" asp-action="Delete" asp-route-id="@item.IdTipoHabitacion">Delete</a>
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>

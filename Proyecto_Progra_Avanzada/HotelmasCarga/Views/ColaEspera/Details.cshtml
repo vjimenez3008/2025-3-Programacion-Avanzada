@@ -1,0 +1,27 @@
+@model HotelmasCarga.Models.ColaEspera
+
+@{
+    ViewData["Title"] = "Detalle Cola de Espera";
+}
+
+<div class="container mt-3">
+    <h2>Detalle</h2>
+    <dl class="row">
+        <dt class="col-sm-2">Cliente</dt>
+        <dd class="col-sm-10">@Model.Cliente?.Nombre</dd>
+
+        <dt class="col-sm-2">Tipo</dt>
+        <dd class="col-sm-10">@Model.TipoHabitacion?.Nombre</dd>
+
+        <dt class="col-sm-2">Fecha Deseada</dt>
+        <dd class="col-sm-10">@Model.FechaDeseada.ToString("yyyy-MM-dd")</dd>
+
+        <dt class="col-sm-2">Fecha Registro</dt>
+        <dd class="col-sm-10">@Model.FechaRegistro.ToString("yyyy-MM-dd HH:mm")</dd>
+
+        <dt class="col-sm-2">Estado</dt>
+        <dd class="col-sm-10">@Model.Estado</dd>
+    </dl>
+    <a asp-action="Edit" asp-route-id="@Model.IdCola" class="btn btn-primary">Editar</a>
+    <a asp-action="Index" class="btn btn-link">Volver</a>
+</div>

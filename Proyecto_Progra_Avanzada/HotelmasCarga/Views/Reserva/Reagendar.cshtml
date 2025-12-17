@@ -1,0 +1,102 @@
+@model HotelmasCarga.Models.ReagendarReservaViewModel
+
+@{
+    ViewData["Title"] = "Reagendar Reserva";
+}
+
+<div class="container mt-3">
+    <h2>Reagendar Reserva</h2>
+
+    @if (TempData["ReagendarError"] != null)
+    {
+        <div class="alert alert-danger">@TempData["ReagendarError"]</div>
+    }
+    @if (TempData["ReagendarMessage"] != null)
+    {
+        <div class="alert alert-success">@TempData["ReagendarMessage"]</div>
+    }
+
+    <form method="get" asp-action="Reagendar" class="form-inline mb-3">
+        <div class="input-group">
+            <input type="text" name="searchName" class="form-control" placeholder="Buscar cliente por nombre" value="@Model.SearchName" />
+            <div class="input-group-append">
+                <button class="btn btn-primary" type="submit">Buscar</button>
+            </div>
+        </div>
+    </form>
+
+    @if (Model.Clientes != null && Model.Clientes.Count > 0)
+    {
+        <form method="get" asp-action="Reagendar" class="mb-3">
+            <input type="hidden" name="searchName" value="@Model.SearchName" />
+            <div class="list-group">
+                @foreach (var c in Model.Clientes)
+                {
+                    <label class="list-group-item">
+                        <input type="radio" name="clienteId" value="@c.IdCliente" />
+                        <strong>@c.Nombre</strong> - @c.Email
+                    </label>
+                }
+            </div>
+            <button class="btn btn-secondary mt-2" type="submit">Seleccionar cliente</button>
+        </form>
+    }
+
+    @if (Model.Reservas != null && Model.Reservas.Count > 0)
+    {
+        <form method="get" asp-action="Reagendar" class="mb-3">
+            <input type="hidden" name="searchName" value="@Model.SearchName" />
+            <input type="hidden" name="clienteId" value="@Model.SelectedClienteId" />
+            <div class="list-group">
+                @foreach (var r in Model.Reservas)
+                {
+                    <label class="list-group-item">
+                        <input type="radio" name="reservaId" value="@r.IdReserva" />
+                        Fecha: @r.FechaReserva.ToString("yyyy-MM-dd") - Hab: @r.Habitacion?.Numero
+                    </label>
+                }
+            </div>
+            <button class="btn btn-secondary mt-2" type="submit">Seleccionar reserva</button>
+        </form>
+    }
+
+    @if (Model.SelectedReserva != null)
+    {
+        <div class="card mb-3">
+            <div class="card-body">
+                <h5 class="card-title">Reserva seleccionada</h5>
+                <p class="card-text">Cliente ID: @Model.SelectedReserva.IdCliente<br />
+                    Habitación: @Model.SelectedReserva.Habitacion?.Numero<br />
+                    Fecha actual: @Model.SelectedReserva.FechaReserva.ToString("yyyy-MM-dd")
+                </p>
+            </div>
+        </div>
+
+        <form method="post" asp-action="ReagendarConfirm">
+            <input type="hidden" name="reservaId" value="@Model.SelectedReservaId" />
+            <input type="hidden" name="searchName" value="@Model.SearchName" />
+
+            <div class="mb-2">Seleccione nueva fecha (próximos 14 días):</div>
+            <div class="row">
+                @foreach (var d in Model.Dates)
+                {
+                    var available = Model.AvailableByDate.ContainsKey(d) ? Model.AvailableByDate[d] : false;
+                    <div class="col-3 mb-2">
+                        <div class="card @(available ? "border-success" : "border-light")">
+                            <div class="card-body p-2 text-center">
+                                <div>@d.ToString("yyyy-MM-dd")</div>
+                                <div class="mt-1">
+                                    <input type="radio" name="newDate" value="@d.ToString("yyyy-MM-dd")" @(available ? "" : "disabled") />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+
+            <button class="btn btn-primary mt-3" type="submit">Confirmar Reagendamiento</button>
+            <a class="btn btn-link mt-3" asp-action="Reagendar">Cancelar</a>
+        </form>
+    }
+
+</div>

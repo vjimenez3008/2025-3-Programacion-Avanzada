@@ -1,0 +1,56 @@
+@model IEnumerable<HotelmasCarga.Models.ColaEspera>
+@using Microsoft.AspNetCore.Mvc.Rendering
+@{
+    ViewData["Title"] = "Lista de Espera";
+}
+
+<div class="container mt-3">
+    <h2>Lista de Espera</h2>
+
+    @if (TempData["ColaMessage"] != null)
+    {
+        <div class="alert alert-success">@TempData["ColaMessage"]</div>
+    }
+
+    <form method="get" class="form-inline mb-3">
+        <div class="form-row align-items-center">
+            <div class="col-auto">
+                @Html.DropDownList("tipoId", (SelectList)ViewData["Tipos"], "Todos", new { @class = "form-control" })
+            </div>
+            <div class="col-auto">
+                <input type="date" name="fechaDeseada" value="@(ViewData["FechaFiltro"] ?? "")" class="form-control" />
+            </div>
+            <div class="col-auto">
+                <button class="btn btn-secondary">Filtrar</button>
+            </div>
+            <div class="col-auto">
+                <a class="btn btn-primary" asp-action="Create">Agregar a lista de espera</a>
+            </div>
+        </div>
+    </form>
+
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Cliente</th>
+                <th>Tipo</th>
+                <th>Fecha Deseada</th>
+                <th>Fecha Registro</th>
+                <th>Estado Calculado</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                var status = item.FechaDeseada.Date < DateTime.Today ? "Descartado" : "Activo";
+                <tr>
+                    <td>@item.Cliente?.Nombre</td>
+                    <td>@item.TipoHabitacion?.Nombre</td>
+                    <td>@item.FechaDeseada.ToString("yyyy-MM-dd")</td>
+                    <td>@item.FechaRegistro.ToString("yyyy-MM-dd HH:mm")</td>
+                    <td>@status</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

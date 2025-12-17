@@ -1,0 +1,39 @@
+@model IEnumerable<HotelmasCarga.Models.Cliente>
+
+@{
+    ViewData["Title"] = "Clientes";
+}
+
+<h1>Clientes</h1>
+
+<p>
+    <a class="btn btn-primary" asp-action="Create">Crear nuevo</a>
+</p>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Nombre</th>
+            <th>Email</th>
+            <th>Teléfono</th>
+            <th>Activo</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>@item.Nombre</td>
+            <td>@item.Email</td>
+            <td>@item.Telefono</td>
+            <td>@(item.Activo ? "Sí" : "No")</td>
+            <td>
+                <a class="btn btn-sm btn-secondary" asp-action="Edit" asp-route-id="@item.IdCliente">Editar</a>
+                <a class="btn btn-sm btn-info" asp-action="Details" asp-route-id="@item.IdCliente">Detalles</a>
+                <a class="btn btn-sm btn-danger" asp-action="Delete" asp-route-id="@item.IdCliente">Eliminar</a>
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>

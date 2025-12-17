@@ -1,0 +1,37 @@
+@model HotelmasCarga.Models.ColaEspera
+
+@{
+    ViewData["Title"] = "Agregar a Lista de Espera";
+}
+
+<div class="container mt-3">
+    <h2>Agregar a Lista de Espera</h2>
+
+    @if (!ViewData.ModelState.IsValid)
+    {
+        <div class="alert alert-danger">Hay errores en el formulario.</div>
+    }
+
+    <form method="post" asp-action="Create">
+        <div class="form-group">
+            <label>Cliente</label>
+            @Html.DropDownList("IdCliente", (SelectList)ViewData["Clientes"], "Seleccione", new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.IdCliente, "", new { @class = "text-danger" })
+        </div>
+
+        <div class="form-group">
+            <label>Tipo de Habitación</label>
+            @Html.DropDownList("IdTipoHabitacion", (SelectList)ViewData["Tipos"], "Seleccione", new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.IdTipoHabitacion, "", new { @class = "text-danger" })
+        </div>
+
+        <div class="form-group">
+            <label>Fecha Deseada</label>
+            <input type="date" name="FechaDeseada" class="form-control" />
+            @Html.ValidationMessageFor(m => m.FechaDeseada, "", new { @class = "text-danger" })
+        </div>
+
+        <button class="btn btn-primary" type="submit">Agregar</button>
+        <a class="btn btn-link" asp-action="Index">Volver</a>
+    </form>
+</div>

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - HotelmasCarga</title>
+    <link rel="stylesheet" href="~/css/site.css" />
+    <script src="~/js/site.js"></script>
+</head>
+<body>
+    @using HotelmasCarga.Models
+    @using Microsoft.AspNetCore.Http
+    @{ var role = Context.Session.GetString("ActiveRole") ?? string.Empty; }
+    <header>
+        <nav>
+            <a href="/">Home</a> |
+            @if (role == Roles.AgendarReservas)
+            {
+                <text>
+                    <a href="/Reserva/Registrar">Registrar Reserva</a> |
+                    <a href="/Reserva/Reagendar">Reagendar</a> |
+                    <a href="/Reserva/CancelarReserva">Cancelar Reserva</a> |
+                    <a href="/ColaEspera/Index">Lista de Espera</a> |
+                </text>
+            }
+            @if (role == Roles.Mantenimientos)
+            {
+                <text>
+                    <a href="/TipoHabitacion">Tipos</a> |
+                    <a href="/Habitacion">Habitaciones</a> |
+                    <a href="/Cliente">Clientes</a> |
+                </text>
+            }
+            <a href="/Role/Index">Switch Role</a> |
+            <a href="/Home/About">About</a>
+        </nav>
+    </header>
+    <div class="container">
+        @RenderBody()
+    </div>
+    <footer>
+        <p>&copy; @(DateTime.Now.Year) - HotelmasCarga</p>
+    </footer>
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

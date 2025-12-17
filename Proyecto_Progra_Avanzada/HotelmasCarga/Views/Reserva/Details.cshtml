@@ -1,0 +1,30 @@
+@model HotelmasCarga.Models.Reserva
+
+@{
+    ViewData["Title"] = "Detalle Reserva";
+}
+
+<h1>Detalle</h1>
+
+<div>
+    <h4>Reserva</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">Fecha Reserva</dt>
+        <dd class="col-sm-10">@Model.FechaReserva.ToString("yyyy-MM-dd")</dd>
+
+        <dt class="col-sm-2">Cliente</dt>
+        <dd class="col-sm-10">@Model.Cliente?.Nombre</dd>
+
+        <dt class="col-sm-2">Habitación</dt>
+        <dd class="col-sm-10">@Model.Habitacion?.Numero</dd>
+
+        <dt class="col-sm-2">Estado</dt>
+        <dd class="col-sm-10">@Model.Estado</dd>
+    </dl>
+</div>
+
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.IdReserva" class="btn btn-primary">Editar</a>
+    <a asp-action="Index" class="btn btn-secondary">Volver</a>
+</div>

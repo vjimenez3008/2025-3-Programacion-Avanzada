@@ -1,0 +1,26 @@
+@model HotelmasCarga.Models.Habitacion
+
+@{
+    ViewData["Title"] = "Eliminar Habitación";
+}
+
+<h1>Eliminar</h1>
+
+<h3>¿Está seguro de que desea eliminar esta habitación?</h3>
+
+<div>
+    <h4>Habitación</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">Número</dt>
+        <dd class="col-sm-10">@Model.Numero</dd>
+        <dt class="col-sm-2">Tipo</dt>
+        <dd class="col-sm-10">@Model.TipoHabitacion?.Nombre</dd>
+    </dl>
+</div>
+
+<form asp-action="Delete">
+    <input type="hidden" asp-for="IdHabitacion" />
+    <input type="submit" value="Eliminar" class="btn btn-danger" />
+    <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
+</form>
